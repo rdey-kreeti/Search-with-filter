@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import './styles.scss';
 
-const ListRow = ({item}) => {
+const ListRow = ({ item }) => {
   return (
     <li className="data-list__row">
       <span className="data-list__row__main">{item.name}</span>
@@ -12,11 +12,8 @@ const ListRow = ({item}) => {
   )
 }
 
-ListRow.proptypes = {
-  item: PropTypes.objectOf(PropTypes.shape({
-    name: PropTypes.string,
-    genre: PropTypes.string
-  }))
+ListRow.propTypes = {
+  item: PropTypes.objectOf(PropTypes.string.isRequired)
 }
 
 export default ListRow;

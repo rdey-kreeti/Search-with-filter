@@ -9,32 +9,34 @@ class Sidebar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      checkedItems: [{type:'name', names: []}, {type:'genre', genres: []}]
+      checkedItems: this.props.checkedItems
     }
     this.handleCheck = this.handleCheck.bind(this);
   }
 
   handleCheck(isChecked, value, type) {
     var checkedArrayIndex = this.state.checkedItems.findIndex(item => item.type === type);
-    if(type === 'name') {
-      if(isChecked) {
+
+    if (type === 'name') {
+      if (isChecked) {
         this.state.checkedItems[checkedArrayIndex].names.push(value);
-      } else if(isChecked === false) {
-        let uncheckedItemindex = this.state.checkedItems[checkedArrayIndex].names.indexOf(value);
-        if(uncheckedItemindex !== -1) {
-          this.state.checkedItems[checkedArrayIndex].names.splice(uncheckedItemindex,1);
+      } else if (isChecked === false) {
+        let uncheckedItemIndex = this.state.checkedItems[checkedArrayIndex].names.indexOf(value);
+        if (uncheckedItemIndex !== -1) {
+          this.state.checkedItems[checkedArrayIndex].names.splice(uncheckedItemIndex, 1);
         }
       }
-    } else if(type === 'genre') {
+    } else if (type === 'genre') {
       if(isChecked) {
         this.state.checkedItems[checkedArrayIndex].genres.push(value);
-      } else if(isChecked === false) {
-        let uncheckedItemindex = this.state.checkedItems[checkedArrayIndex].genres.indexOf(value);
-        if(uncheckedItemindex !== -1) {
-          this.state.checkedItems[checkedArrayIndex].genres.splice(uncheckedItemindex,1);
+      } else if (isChecked === false) {
+        let uncheckedItemIndex = this.state.checkedItems[checkedArrayIndex].genres.indexOf(value);
+        if (uncheckedItemIndex !== -1) {
+          this.state.checkedItems[checkedArrayIndex].genres.splice(uncheckedItemIndex, 1);
         }
       }
     }
+
     this.props.handleFilter(this.state.checkedItems, type);
   }
 
@@ -49,10 +51,14 @@ class Sidebar extends Component {
   }
 }
 
-Sidebar.proptypes = {
-  musicianNames: PropTypes.arrayOf(PropTypes.string),
-  musicianGenres: PropTypes.arrayOf(PropTypes.string),
-  handleFilter: PropTypes.func
+Sidebar.defaultProps = {
+  checkedItems: [{type:'name', names:[]}, {type:'genre', genres:[]}]
+};
+
+Sidebar.propTypes = {
+  musicianNames: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  musicianGenres: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  handleFilter: PropTypes.func.isRequired
 }
 
 export default Sidebar;

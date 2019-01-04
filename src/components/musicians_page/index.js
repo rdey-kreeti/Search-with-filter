@@ -13,54 +13,56 @@ class Musicians extends Component {
     this.state = {
       data: this.props.data,
       searchTerm: '',
-      checkedItems: [{type:'name', names:[]}, {type:'genre', genres:[]}]
+      checkedItems: this.props.checkedItems
     }
+
     this.handleSearch = this.handleSearch.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
   }
 
   handleSearch(e) {
     const inputValue = e.target.value;
-    this.setState({searchTerm: inputValue}, () => this.renderFilteredResults());
+    this.setState({ searchTerm: inputValue }, () => this.renderFilteredResults());
   }
 
   handleFilter(checkedItems) {
-    this.setState({checkedItems: checkedItems}, () => this.renderFilteredResults());
+    this.setState({ checkedItems: checkedItems }, () => this.renderFilteredResults());
   }
 
   renderFilteredResults() {
-    const {searchTerm, checkedItems, data} = this.state;
+    const { searchTerm, checkedItems } = this.state;
     const fullDataSet = this.props.data;
     const nameArrayIndex = checkedItems.findIndex(item => item.type === 'name');
     const genreArrayIndex = checkedItems.findIndex(item => item.type === 'genre');
     const nameArray = checkedItems[nameArrayIndex].names;
     const genreArray = checkedItems[genreArrayIndex].genres;
 
-    if(!nameArray.length && !genreArray.length) {
+    if (!nameArray.length && !genreArray.length) {
       let updateMusiciansList = fullDataSet.filter(item => item.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 || item.genre.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
-      this.setState({data: updateMusiciansList});
+      this.setState({ data: updateMusiciansList });
     }
 
-    if(!searchTerm.length) {
+    if (!searchTerm.length) {
       let filteredList = fullDataSet.filter(item => checkedItems[nameArrayIndex].names.includes(item.name) || checkedItems[genreArrayIndex].genres.includes(item.genre));
-      this.setState({data: filteredList});
+      this.setState({ data: filteredList });
     }
 
-    if((nameArray.length || genreArray.length) && searchTerm.length) {
-      let combinedFilteredList = data.filter(item => item.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 || item.genre.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
+    if ((nameArray.length || genreArray.length) && searchTerm.length) {
+      let combinedFilteredList = fullDataSet.filter(item => item.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 || item.genre.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
       combinedFilteredList = combinedFilteredList.filter(item => checkedItems[nameArrayIndex].names.includes(item.name) || checkedItems[genreArrayIndex].genres.includes(item.genre));
-      this.setState({data: combinedFilteredList});
+      this.setState({ data: combinedFilteredList });
     }
 
-    if(!nameArray.length && !genreArray.length && !searchTerm.length) {
-      this.setState({data: fullDataSet});
+    if (!nameArray.length && !genreArray.length && !searchTerm.length) {
+      this.setState({ data: fullDataSet });
     }
   }
 
   render() {
     const names = this.props.data.map(item => item.name);
     let genres = this.props.data.map(item => item.genre);
-    genres = genres.filter((element,index) => genres.indexOf(element) === index);
+    genres = genres.filter((element, index) => genres.indexOf(element) === index);
+
     return (
       <section className="musicians-page">
         <h1 className="musicians-page__heading">Search with filter</h1>
@@ -73,6 +75,10 @@ class Musicians extends Component {
     )
   }
 }
+
+Musicians.defaultProps = {
+  checkedItems: [{type:'name', names:[]}, {type:'genre', genres:[]}]
+};
 
 Musicians.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({

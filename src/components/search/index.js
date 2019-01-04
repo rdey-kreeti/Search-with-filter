@@ -1,10 +1,9 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
 
 import './styles.scss';
 
-const SearchBar = ({searchValue, handleSearch}) => {
+const SearchBar = ({ searchValue, handleSearch }) => {
   return (
     <section className="search">
       <input className="search__input" type="text"  value={searchValue} onChange={handleSearch} placeholder="Search"/>
@@ -12,8 +11,8 @@ const SearchBar = ({searchValue, handleSearch}) => {
   )
 }
 
-SearchBar.proptypes = {
-  searchValue: PropTypes.string,
+SearchBar.propTypes = {
+  searchValue: PropTypes.string.isRequired,
   handleSearch: PropTypes.func.isRequired
 }
 
